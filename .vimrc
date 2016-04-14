@@ -1,64 +1,90 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 syntax on
+
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
-Plugin 'L9'
 " Syntax Highlighting
 Plugin 'rodjek/vim-puppet'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'elzr/vim-json'
+
+" IDE features
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'jnurmine/Zenburn'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'nvie/vim-flake8'
+Plugin 'kien/ctrlp.vim'
+Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-set showmatch	
-set autoindent	
-set shiftwidth=2	
-set smartindent	
-set smarttab	
-set softtabstop=2
-
-" Begin custom functions and cool stuff
-
-
-" Some useful mappings
 map ,L    :let @z=TimeStamp()<Cr>"zpa
-map ,datetime :let @z=strftime("%Y %b %d %X")<Cr>"zpa
-map ,date :let @z=strftime("%Y %b %d")<Cr>"zpa
+map ,datetime :let @z=strftime("%d %b %Y %X")<Cr>"zpa
 
+map ,date :let @z=strftime("%d %b %Y")<Cr>"zpa
 " Set new files containing a shebang to have the executable bit
 au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
 
-" For any newly created Python scripts, set the shebang and encoding
 if has("autocmd")
   augroup content
     autocmd BufNewFile *.py
        \ 0put = '#!/usr/bin/env python'  |
        \ 1put = '#-*- coding: utf-8 -*-' |
        \ $put = '' |
-       \ $put = '# vim: set sw==3 tw=80 :' |
        \ $put = '' |
+       \ $put = '# vim: set sw==3 tw=80 :' |
        \ norm gg19jf]
   augroup END
 endif
 
+" Code folding
+set foldmethod=indent
+set foldlevel=99
+" Enable remaps the default unfold map from za to spacebar
+nnoremap <space> za
+"PEP8 standard indentation
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+" web stack filetypes
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
+
+" Mark whitespace as bad
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+let python_highlight_all=1
+
+" Set encoding
+set encoding=utf-8
+
+" Some logic to decide which colour scheme to use
+if has('gui_running')
+  set background=dark
+  colorscheme solarized
+else
+  colorscheme zenburn
+endif
+
+" Map F5 to change colour
+call togglebg#map("<F5>")
+
+" Turn off these really annoying files
+set noswapfile
