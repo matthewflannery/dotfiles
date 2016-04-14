@@ -38,21 +38,26 @@ set smartindent
 set smarttab	
 set softtabstop=2
 
-map ,L    :let @z=TimeStamp()<Cr>"zpa
-map ,datetime :let @z=strftime("%d %b %Y %X")<Cr>"zpa
+" Begin custom functions and cool stuff
 
-map ,date :let @z=strftime("%d %b %Y")<Cr>"zpa
+
+" Some useful mappings
+map ,L    :let @z=TimeStamp()<Cr>"zpa
+map ,datetime :let @z=strftime("%Y %b %d %X")<Cr>"zpa
+map ,date :let @z=strftime("%Y %b %d")<Cr>"zpa
+
 " Set new files containing a shebang to have the executable bit
 au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
 
+" For any newly created Python scripts, set the shebang and encoding
 if has("autocmd")
   augroup content
     autocmd BufNewFile *.py
        \ 0put = '#!/usr/bin/env python'  |
        \ 1put = '#-*- coding: utf-8 -*-' |
        \ $put = '' |
-       \ $put = '' |
        \ $put = '# vim: set sw==3 tw=80 :' |
+       \ $put = '' |
        \ norm gg19jf]
   augroup END
 endif
