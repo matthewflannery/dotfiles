@@ -1,3 +1,7 @@
+" NOTE: This will look awful if you do not use base16-default or base16-ocean
+" for iTerm & vim: https://github.com/chriskempson/base16-vim and
+" https://github.com/chriskempson/base16-iterm2
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 syntax on
