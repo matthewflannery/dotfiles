@@ -31,11 +31,12 @@ filetype plugin indent on    " required
 
 " Some useful mappings.
 map ,L    :let @z=TimeStamp()<Cr>"zpa
-map ,datetime :let @z=strftime("%d %b %Y %X")<Cr>"zpa
-map ,date :let @z=strftime("%d %b %Y")<Cr>"zpa
+map ,datetime :let @z=strftime("%Y %b %d %X")<Cr>"zpa
+map ,date :let @z=strftime("%Y %b %d")<Cr>"zpa
 
 " Set new files containing a shebang to have the executable bit
 au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
+
 
 " For newly created Python files, sets a header
 if has("autocmd")
@@ -43,9 +44,11 @@ if has("autocmd")
     autocmd BufNewFile *.py
        \ 0put = '#!/usr/bin/env python'  |
        \ 1put = '#-*- coding: utf-8 -*-' |
-       \ $put = '' |
+       \ $put = '# Author: Matt Flannery' |
        \ $put = '' |
        \ $put = '# vim: set sw==3 tw=80 :' |
+       \ $put = '' |
+       \ $put = '' |
        \ norm gg19jf]
   augroup END
 endif
@@ -55,25 +58,16 @@ set foldmethod=indent
 set foldlevel=99
 " Enable remaps the default unfold map from za to spacebar
 nnoremap <space> za
-"PEP8 standard indentation
-au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
-" web stack filetypes
-au BufNewFile,BufRead *.js, *.html, *.css
-    \ set tabstop=2
-    \ set softtabstop=2
-    \ set shiftwidth=2
-
-" Mark whitespace as bad
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 let python_highlight_all=1
+
+set ts=4
+set autoindent
+set expandtab
+set shiftwidth=4
+set cursorline
+set showmatch
+
 
 " Set encoding
 set encoding=utf-8
