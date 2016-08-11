@@ -1,10 +1,5 @@
-" NOTE: This will look awful if you do not use base16-default or base16-ocean
-" for iTerm & vim: https://github.com/chriskempson/base16-vim and
-" https://github.com/chriskempson/base16-iterm2
-
 set nocompatible              " be iMproved, required
 filetype off                  " required
-syntax on
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -32,13 +27,14 @@ Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 call vundle#end()            " required
 filetype plugin indent on    " required
+syntax on
 
 " Some useful mappings.
 map ,L    :let @z=TimeStamp()<Cr>"zpa
 map ,datetime :let @z=strftime("%Y %b %d %X")<Cr>"zpa
 map ,date :let @z=strftime("%Y %b %d")<Cr>"zpa
 
-" Set new files containing a shebang to have the executable bit
+" Set new files containing a shebang to have the executable bit aw yis 
 au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
 
 " For newly created Python files, sets a header
@@ -50,13 +46,13 @@ if has("autocmd")
        \ $put = '# Author: Matt Flannery' |
        \ $put = '' |
        \ $put = '# vim: set sw==3 tw=80 :' |
-       \ $put = '# Desc: ' |
+       \ $put = '# Desc: Description here ' |
        \ norm gg19jf]
   augroup END
 endif
 
-" Code folding
-set foldmethod=indent
+" Code folding, configured for JSON because that's the only time I fold tbh
+setlocal foldmethod=syntax
 set foldlevel=99
 " Enable remaps the default unfold map from za to spacebar
 nnoremap <space> za
@@ -74,6 +70,7 @@ set showmatch
 " Set encoding
 set encoding=utf-8
 
+" v nice
 set background=dark
 colorscheme base16-default
 " colorscheme base16-ocean
@@ -88,4 +85,5 @@ colorscheme base16-default
 " Map F5 to change colour
 "call togglebg#map("<F5>")
 
+" goodbye annoying files
 set noswapfile
