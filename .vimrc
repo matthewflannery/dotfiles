@@ -16,6 +16,7 @@ Plugin 'elzr/vim-json'
 
 " IDE features
 Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'jnurmine/Zenburn'
@@ -23,7 +24,12 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'nvie/vim-flake8'
 Plugin 'kien/ctrlp.vim'
+Plugin 'hashivim/vim-terraform'
+Plugin 'evanmiller/nginx-vim-syntax'
+Plugin 'stephpy/vim-yaml'
+Plugin 'https://github.com/chase/vim-ansible-yaml'
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -34,7 +40,7 @@ map ,L    :let @z=TimeStamp()<Cr>"zpa
 map ,datetime :let @z=strftime("%Y %b %d %X")<Cr>"zpa
 map ,date :let @z=strftime("%Y %b %d")<Cr>"zpa
 
-" Set new files containing a shebang to have the executable bit aw yis 
+" Set new files containing a shebang to have the executable bit
 au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
 
 " For newly created Python files, sets a header
@@ -51,7 +57,7 @@ if has("autocmd")
   augroup END
 endif
 
-" Code folding, configured for JSON because that's the only time I fold tbh
+" Code folding
 setlocal foldmethod=syntax
 set foldlevel=99
 " Enable remaps the default unfold map from za to spacebar
@@ -70,7 +76,6 @@ set showmatch
 " Set encoding
 set encoding=utf-8
 
-" v nice
 set background=dark
 colorscheme base16-default
 " colorscheme base16-ocean
@@ -84,6 +89,6 @@ colorscheme base16-default
 
 " Map F5 to change colour
 "call togglebg#map("<F5>")
-
-" goodbye annoying files
+set laststatus=2
 set noswapfile
+set backspace=2
