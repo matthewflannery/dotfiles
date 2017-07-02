@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+export EDITOR='vim'
+
+function f() { find . -iname "*$1*" ${@:2} }
+function r() { grep "$1" ${@:2} -R . }
+
+#mkdir and cd
+function mkcd() { mkdir -p "$@" && cd "$_"; }
+
+# Aliases
+alias c="pbcopy"
+alias cls='clear'
+alias ls="ls -G"
+alias l='ls'
+alias ll="ls -GFlash"
+alias ccat="pygmentize -g"
+alias npmisd='npm install --save-dev'
+alias cppcompile='c++ -std=c++11 -stdlib=libc++'
+
+alias cd..='cd ..'
+alias cd...='cd ../..'
+alias cd....='cd ../../..'
+alias cd.....='cd ../../../..'
+alias cd......='cd ../../../../..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+
+#Use vim for editing configs
+alias zshconfig="vim ~/.zshrc"
+

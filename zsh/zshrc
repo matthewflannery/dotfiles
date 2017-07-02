@@ -1,0 +1,86 @@
+# Check if zplug is installed
+if [[ ! -d ~/.zplug ]]; then
+  git clone https://github.com/zplug/zplug ~/.zplug
+  source ~/.zplug/init.zsh && zplug update --self
+fi
+
+export PATH="/usr/local/bin:$PATH"
+# Load pyenv, rbenv & nvm
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+eval "$(rbenv init - zsh)"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+
+setopt appendhistory autocd beep extendedglob nomatch notify
+#history
+HISTSIZE=100000000
+SAVEHIST=100000000
+setopt HIST_IGNORE_SPACE
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups # ignore duplication command history list
+setopt hist_ignore_space
+setopt hist_verify
+setopt inc_append_history
+setopt share_history # share command history data
+HISTFILE=~/.zsh_history
+
+# Essential
+source ~/.zplug/init.zsh
+
+
+# Auto completion related
+CASE_SENSITIVE="false"
+# Load completion library for those sweet [tab] squares
+zplug "lib/completion", from:oh-my-zsh
+
+# Make sure to use double quotes to prevent shell expansion
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-history-substring-search"
+zplug "zsh-users/zsh-syntax-highlighting"
+zplug "tarruda/zsh-autosuggestions", of:"zsh-autosuggestions.zsh"
+zplug "tcnksm/docker-alias", use:zshrc
+zplug "felixr/docker-zsh-completion"
+zplug "rupa/z", use:z.sh
+zplug "plugins/git",  from:oh-my-zsh, as:plugin
+#zplug "themes/robbyrussell", from:oh-my-zsh
+zplug "cbrock/sugar-free", as:theme
+zplug "rimraf/k"
+zplug "djui/alias-tips"
+# zplug "sindresorhus/pure"
+
+
+# Install packages that have not been installed yet
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    else
+        echo
+    fi
+fi
+
+zplug load
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source ~/.zshenv
+
+bindkey -v # Specify Vi for ZLE - ZSH Line Editor https://wiki.archlinux.org/index.php/zsh#Key_bindings 
+# Ensure zsh uses ctrl+a / ctrl+e for setting cursor to start/end of line
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+bindkey '^R' history-incremental-search-backward
+
+#bindkey '^[[A' history-substring-search-up
+#bindkey '^[[B' history-substring-search-down
+
+
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/mattflannery/.nvm/versions/node/v6.11.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/mattflannery/.nvm/versions/node/v6.11.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/mattflannery/.nvm/versions/node/v6.11.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/mattflannery/.nvm/versions/node/v6.11.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh

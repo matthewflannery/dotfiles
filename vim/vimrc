@@ -1,0 +1,143 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'chriskempson/base16-vim'
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+
+" Syntax Highlighting
+Plugin 'JamshedVesuna/vim-markdown-preview'
+Plugin 'rodjek/vim-puppet'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'elzr/vim-json'
+Plugin 'martinda/Jenkinsfile-vim-syntax'
+Plugin 'PProvost/vim-ps1'
+
+" IDE features
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'xero/blaquemagick.vim'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'nvie/vim-flake8'
+Plugin 'hashivim/vim-terraform'
+Plugin 'evanmiller/nginx-vim-syntax'
+Plugin 'stephpy/vim-yaml'
+Plugin 'https://github.com/chase/vim-ansible-yaml'
+Plugin 'nanotech/jellybeans.vim'
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+syntax on
+
+let vim_markdown_preview_github=1
+
+" Some useful mappings.
+map ,L    :let @z=TimeStamp()<Cr>"zpa
+map ,datetime :let @z=strftime("%Y %b %d %X")<Cr>"zpa
+map ,date :let @z=strftime("%Y %b %d")<Cr>"zpa
+
+" Set new files containing a shebang to have the executable bit
+au BufWritePost * if getline(1) =~ "^#!" | if getline(1) =~ "/bin/" | silent !chmod +x <afile> | endif | endif
+
+" For newly created Python files, sets a header
+" Could use at template text file in ~/.vim/ for eg but w/e
+if has("autocmd")
+  augroup content
+    autocmd BufNewFile *.py
+       \ 0put = '#!/usr/bin/env python'  |
+       \ 1put = '#-*- coding: utf-8 -*-' |
+       \ $put = '# Author: Matt Flannery' |
+       \ $put = '' |
+       \ $put = '# vim: set sw==3 tw=80 :' |
+       \ $put = '# Desc: Description here ' |
+       \ norm gg19jf]
+  augroup END
+endif
+
+" For newly created Javascript files, add a header
+if has("autocmd")
+  augroup content
+    autocmd BufNewFile *.js
+       \ 0put = '#!/usr/bin/env node'  |
+       \ 1put = '// Desc: Description here ' |
+       \ norm gg19jf]
+  augroup END
+endif
+
+" Custom functions
+
+" Write COMMIT_EDITMSG and push to current branch (credit https://github.com/endel/.vim/) 
+function! PushToCurrentBranch()
+  exe ":Gwrite"
+  let branch = fugitive#statusline()
+  let branch = substitute(branch, '\c\v\[?GIT\(([a-z0-9\-_\./:]+)\)\]?', $BRANCH.' \1', 'g')
+  exe ":Git push origin" . branch
+endfunction
+
+" Map gwp keys to call the function
+nnoremap gwp :call PushToCurrentBranch()<CR>
+
+
+
+
+" Code folding
+setlocal foldmethod=syntax
+set foldlevel=99
+" Enable remaps the default unfold map from za to spacebar
+nnoremap <space> za
+
+let python_highlight_all=1
+
+set guifont=Inconsolata\ for\ Powerline:h15
+let g:Powerline_symbols = 'fancy'
+set encoding=utf-8
+set t_Co=256
+set fillchars+=stl:\ ,stlnc:\
+set term=xterm-256color
+set termencoding=utf-8
+
+"python from powerline.vim import setup as powerline_setup
+"python powerline_setup()
+"python del powerline_setup
+
+set ts=4
+set autoindent
+set expandtab
+set shiftwidth=4
+"set cursorline
+set showmatch
+
+
+" Set encoding
+set encoding=utf-8
+
+"set background=dark
+
+
+"colorscheme base16-default-dark
+colorscheme jellybeans
+"colorscheme blaquemagick
+"colorscheme base16-default-dark
+"colorscheme base16-ocean
+" Some logic to decide which colour scheme to use
+"if has('gui_running')
+"  set background=dark
+"  colorscheme solarized
+"else
+"  colorscheme zenburn
+"endif
+
+" Map F5 to change colour
+"call togglebg#map("<F5>")
+set laststatus=2
+set noswapfile
+set backspace=2
